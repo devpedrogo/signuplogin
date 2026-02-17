@@ -35,7 +35,7 @@ login_python/
     │   ├── App.tsx     # Lógica principal e telas (Login/Cadastro)
     │   └── App.css     # Estilização do sistema
     └── package.json    # Dependências do React
-
+```
 ## ⚙️ Como rodar o projeto
 
 ### 1. Preparar o Backend
@@ -49,7 +49,7 @@ py -m venv venv
 pip install flask flask-cors
 # Rodar o servidor
 py app.py
-
+```
 ### 2. Preparar o Frontend
 ```bash
 cd frontend
@@ -57,7 +57,7 @@ cd frontend
 npm install
 # Rodar em modo de desenvolvimento
 npm run dev
-
+```
 ## 🧠 Aprendizados
 
 Este projeto permitiu consolidar conhecimentos fundamentais para a carreira de desenvolvedor:
