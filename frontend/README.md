@@ -1,73 +1,68 @@
-# React + TypeScript + Vite
+# 🔐 Sistema de Autenticação Full Stack
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este é um projeto de estudo desenvolvido para praticar a comunicação entre um **Frontend moderno (React + TypeScript)** e um **Backend robusto (Python + Flask)**, utilizando persistência de dados com **SQLite**.
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## React Compiler
+## 🚀 Tecnologias Utilizadas
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### **Backend**
+* **Python 3.12**: Linguagem principal do servidor.
+* **Flask**: Micro-framework para criação da API.
+* **SQLite**: Banco de dados relacional leve, armazenado em arquivo.
+* **Flask-CORS**: Para permitir a comunicação segura entre o Frontend e o Backend.
 
-## Expanding the ESLint configuration
+### **Frontend**
+* **React + Vite**: Biblioteca para interface de usuário com alta performance.
+* **TypeScript**: Tipagem estática para um código mais seguro e menos propenso a erros.
+* **Axios**: Cliente HTTP para realizar requisições à API.
+* **CSS3**: Estilização personalizada com foco em UX (User Experience).
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 📋 Funcionalidades
+* **Cadastro de Usuários**: Validação de campos vazios e tratamento de usuários duplicados.
+* **Login**: Verificação de credenciais no banco de dados.
+* **Persistência**: Os dados permanecem salvos no banco SQLite mesmo após reiniciar o servidor.
+* **Design Responsivo**: Tela de login e cadastro centralizada e intuitiva.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## 📁 Estrutura do Projeto
+```plaintext
+login_python/
+├── backend/
+│   ├── app.py          # Servidor Flask e rotas da API
+│   └── database.db     # Arquivo do banco de dados SQLite
+└── frontend/
+    ├── src/
+    │   ├── App.tsx     # Lógica principal e telas (Login/Cadastro)
+    │   └── App.css     # Estilização do sistema
+    └── package.json    # Dependências do React
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## ⚙️ Como rodar o projeto
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### 1. Preparar o Backend
+```bash
+cd backend
+# Criar ambiente virtual (recomendado)
+py -m venv venv
+# Ativar venv (Windows)
+.\venv\Scripts\activate
+# Instalar bibliotecas
+pip install flask flask-cors
+# Rodar o servidor
+py app.py
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 2. Preparar o Frontend
+```bash
+cd frontend
+# Instalar dependências
+npm install
+# Rodar em modo de desenvolvimento
+npm run dev
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## 🧠 Aprendizados
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Este projeto permitiu consolidar conhecimentos fundamentais para a carreira de desenvolvedor:
+
+* **Criação de APIs RESTful** utilizando Python.
+* **Manipulação de banco de dados SQL** (CRUD básico).
+* **Gerenciamento de estados no React** (Hooks como `useState`).
+* **Configuração de ambiente de desenvolvimento** Python no VS Code.
