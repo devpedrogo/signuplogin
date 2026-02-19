@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import './App.css';
 
@@ -17,6 +17,14 @@ function App() {
     setPassword('');
     setMessage('');
   };
+
+  useEffect(() => {
+    const savedUser = localStorage.getItem('user_session');
+    if (savedUser) {
+      setUsername(savedUser);
+      setIsLogged(true);
+    }
+  }, []);
 
   const handleRegister = async () => {
     if (username.trim() === '' || password.trim() === '') {
@@ -43,6 +51,7 @@ function App() {
     try {
       const response = await axios.post('http://127.0.0.1:5000/login', { username, password });
       setMessage(response.data.message);
+      localStorage.setItem('user_session', username);
       setIsLogged(true);
     } catch (error: any) {
       setMessage(error.response?.data?.error || 'Usuário ou senha inválidos');
@@ -129,7 +138,7 @@ function App() {
           <button 
             className="btn-register" 
             style={{ marginTop: '20px', backgroundColor: '#e74c3c' }} 
-            onClick={() => { setIsLogged(false); setDashboardData(null); cleanInputs(); }}
+            onClick={() => { localStorage.removeItem('user_session'); setIsLogged(false); setDashboardData(null); cleanInputs(); }}
           >
             Encerrar Sessão
           </button>
