@@ -49,13 +49,91 @@ function App() {
     }
   };
 
-  // 1. TELA DE SUCESSO (LOGADO)
+  const [dashboardData, setDashboardData] = useState<any>(null);
+
+  // Função para buscar dados do BD
+  const fetchDashboardData = async () => {
+    try {
+      const response = await axios.get('http://127.0.0.1:5000/dashboard-info');
+      setDashboardData(response.data);
+    } catch (error) {
+      console.error("Erro ao buscar dados do dashboard", error);
+    }
+  };
+
+  // Quando o usuário logar, disparar a busca
   if (isLogged) {
+    if (!dashboardData) fetchDashboardData();
+
     return (
-      <div style={{ padding: '40px', textAlign: 'center' }}>
-        <h1>🎉 Bem-vindo, {username}!</h1>
-        <p>Você está autenticado no sistema.</p>
-        <button style={{background: 'red', color: 'white', width: '150px', fontSize: '16px'}} onClick={() => { setIsLogged(false); cleanInputs(); }}>Sair do Sistema</button>
+      <div className="container">
+        <div className="dash-card" style={{ maxWidth: '1200px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', justifyContent: 'center' }}>
+            <span style={{ fontSize: '2rem' }}>📊</span>
+            <h2 style={{ margin: 0 }}>Painel de Controle</h2>
+          </div>
+          
+          <p className="link-text">Bem-vindo, <strong>{username}</strong></p>
+          
+          <hr style={{ border: '0.5px solid #eee', margin: '20px 0' }} />
+          
+          {dashboardData ? (
+            <div className="dashboard-grid">
+              <div className="stat-card">
+                <h4>Usuários</h4>
+                <p>{dashboardData.total_registros}</p>
+              </div>
+              
+              <div className="stat-card" style={{ borderLeftColor: '#4CAF50' }}>
+                <h4>Servidor</h4>
+                <div className="status-online">
+                  <span className="status-dot"></span>
+                  {dashboardData.status_sistema}
+                </div>
+              </div>
+
+              <div className='stat-card' style={{ textAlign: 'left', borderLeftColor: '#f30713' }}>
+                <h4 style={{ fontSize: '0.8rem', color: '#666', marginBottom: '10px' }}>USUÁRIOS CADASTRADOS</h4>
+                <ul style={{ 
+                  listStyle: 'none', 
+                  padding: 0, 
+                  maxHeight: '100px', 
+                  overflowY: 'auto',
+                  border: '1px solid #e70606',
+                  borderRadius: '4px'
+                }}>
+                  {dashboardData.usuarios.map((user: string, index: number) => (
+                    <li key={index} style={{ 
+                      padding: '8px 12px', 
+                      borderBottom: index === dashboardData.usuarios.length - 1 ? 'none' : '1px solid #e70606',
+                      fontSize: '0.9rem',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '10px',
+                      color: 'black'
+                    }}>
+                      👤 {user}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          ) : (
+            <p>Carregando dados...</p>
+          )}
+
+          <div style={{ marginTop: '30px', fontSize: '0.8rem', color: '#888', fontStyle: 'italic' }}>
+            "{dashboardData?.mensagem}"
+          </div>
+
+          <button 
+            className="btn-register" 
+            style={{ marginTop: '20px', backgroundColor: '#e74c3c' }} 
+            onClick={() => { setIsLogged(false); setDashboardData(null); cleanInputs(); }}
+          >
+            Encerrar Sessão
+          </button>
+        </div>
       </div>
     );
   }

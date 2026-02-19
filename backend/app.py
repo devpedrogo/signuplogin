@@ -59,6 +59,28 @@ def login():
     else:
         return jsonify({"error": "Usuário ou senha incorretos!"}), 401
 
+@app.route('/dashboard-info', methods=['GET'])
+def get_dashboard_info():
+    conn = sqlite3.connect('database.db')
+    cursor = conn.cursor()
+    
+    # Exemplo: Pegar o total de usuários no sistema
+    cursor.execute('SELECT COUNT(*) FROM users')
+    total_users = cursor.fetchone()[0]
+    
+    # Busca a lista de nomes
+    cursor.execute('SELECT username FROM users')
+    users_list = [row[0] for row in cursor.fetchall()]
+
+    conn.close()
+    
+    return jsonify({
+        "total_registros": total_users,
+        "usuarios": users_list,
+        "status_sistema": "Operacional",
+        "mensagem": "Dados sincronizados com o banco local."
+    }), 200
+
 if __name__ == '__main__':
     init_db()
     app.run(debug=True, port=5000)
