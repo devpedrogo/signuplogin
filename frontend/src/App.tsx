@@ -87,6 +87,30 @@ function App() {
     }
   };
 
+  const [showModal, setShowModal] = useState(false);
+  const [selectedUser, setSelectedUser] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+
+  const confirmUpdate = async () => {
+    if (!newPassword.trim()) {
+      alert("Digite uma nova senha!");
+      return;
+    }
+
+    try {
+      await axios.put('http://127.0.0.1:5000/update-user', {
+        username: selectedUser,
+        new_password: newPassword
+      });
+      alert("Senha atualizada!");
+      setShowModal(false);
+      setNewPassword('');
+      fetchDashboardData();
+    } catch (error) {
+      alert("Erro ao atualizar");
+    }
+  };
+
   // Quando o usuário logar, disparar a busca
   if (isLogged) {
     if (!dashboardData) fetchDashboardData();
@@ -140,22 +164,30 @@ function App() {
                       color: 'black'
                     }}>
                       <span>👤 {user}</span>
-                      <button 
-                        onClick={() => handleDelete(user)}
-                        style={{ 
-                          backgroundColor: '#ff4d4d', 
-                          color: 'white', 
-                          border: 'none', 
-                          padding: '5px 12px', 
-                          borderRadius: '4px',
-                          cursor: 'pointer',
-                          fontSize: '0.7rem',
-                          width: '60px',
-                          margin: '0'
-                        }}
-                      >
-                        Excluir
-                      </button>
+                      <div style={{display: 'flex', gap: '5px'}}>
+                        <button 
+                          onClick={() => { setSelectedUser(user); setShowModal(true); }}
+                          style={{ width: '60px', margin: '0', fontSize: '0.7rem', backgroundColor: '#23aeb3', color: 'white', border: 'none', padding: '5px 12px', borderRadius: '4px', cursor: 'pointer' }}
+                        >
+                          Editar
+                        </button>
+                        <button 
+                          onClick={() => handleDelete(user)}
+                          style={{ 
+                            backgroundColor: '#ff4d4d', 
+                            color: 'white', 
+                            border: 'none', 
+                            padding: '5px 12px', 
+                            borderRadius: '4px',
+                            cursor: 'pointer',
+                            fontSize: '0.7rem',
+                            width: '60px',
+                            margin: '0'
+                          }}
+                        >
+                          Excluir
+                        </button>
+                      </div>
                     </li>
                   ))}
                 </ul>
@@ -177,6 +209,31 @@ function App() {
             Encerrar Sessão
           </button>
         </div>
+
+        {showModal && (
+          <div className="modal-overlay">
+            <div className="modal-content">
+              <h3 style={{color: 'gray'}}>Editar Senha: {selectedUser}</h3>
+              <input 
+                type="password" 
+                placeholder="Nova Senha" 
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                style={{ padding: '10px', width: '100%', marginBottom: '10px' }}
+              />
+              <div className="modal-actions">
+                <button className="btn-login" onClick={confirmUpdate}>Salvar</button>
+                <button 
+                  className="btn-register" 
+                  style={{ backgroundColor: '#95a5a6' }} 
+                  onClick={() => setShowModal(false)}
+                >
+                  Cancelar
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     );
   }
@@ -225,7 +282,7 @@ function App() {
           </div>
         )}
       </div>
-    </div>
+    </div>   
   );
 }
 

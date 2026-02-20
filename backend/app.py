@@ -98,9 +98,8 @@ def delete_user(username):
         conn.close()
         return jsonify({"error": "Usuário não encontrado"}), 404
 
-# Rota para ATUALIZAR a senha de um usuário
-@app.route('/update-password', methods=['PUT'])
-def update_password():
+@app.route('/update-user', methods=['PUT'])
+def update_user():
     data = request.json
     username = data.get('username')
     new_password = data.get('new_password')
@@ -110,11 +109,17 @@ def update_password():
 
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
+    
+    # Atualiza a senha para o usuário específico
     cursor.execute('UPDATE users SET password = ? WHERE username = ?', (new_password, username))
     conn.commit()
-    conn.close()
-
-    return jsonify({"message": "Senha atualizada com sucesso!"}), 200
+    
+    if cursor.rowcount > 0:
+        conn.close()
+        return jsonify({"message": "Senha atualizada com sucesso!"}), 200
+    else:
+        conn.close()
+        return jsonify({"error": "Usuário não encontrado"}), 404
 
 if __name__ == '__main__':
     init_db()
