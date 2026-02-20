@@ -1,68 +1,45 @@
-# 🔐 Sistema de Autenticação Full Stack
+# 🔐 Sistema de Autenticação e Gestão (Full Stack CRUD)
 
-Este é um projeto de estudo desenvolvido para praticar a comunicação entre um **Frontend moderno (React + TypeScript)** e um **Backend robusto (Python + Flask)**, utilizando persistência de dados com **SQLite**.
+Este projeto é uma aplicação completa de gerenciamento de usuários. Desenvolvido para consolidar conceitos de **Systems Analysis and Development (ADS)**, ele integra um **Backend em Python** com um **Frontend moderno em React + TypeScript**.
 
 
 
-## 🚀 Tecnologias Utilizadas
+## 🚀 Funcionalidades Implementadas
 
-### **Backend**
-* **Python 3.12**: Linguagem principal do servidor.
-* **Flask**: Micro-framework para criação da API.
-* **SQLite**: Banco de dados relacional leve, armazenado em arquivo.
-* **Flask-CORS**: Para permitir a comunicação segura entre o Frontend e o Backend.
+* **Autenticação**: Sistema de Login e Cadastro com persistência no SQLite.
+* **Gestão de Sessão**: Uso de `localStorage` para manter o usuário logado após o refresh (F5).
+* **Dashboard Administrativo**: Painel visual com estatísticas em tempo real (Total de usuários e status do servidor).
+* **CRUD Completo**:
+    * **Create**: Cadastro de novos usuários.
+    * **Read**: Listagem dinâmica de usuários cadastrados.
+    * **Update**: Edição de senhas via **Interface de Modal** personalizada.
+    * **Delete**: Remoção de registros com confirmação de segurança.
 
-### **Frontend**
-* **React + Vite**: Biblioteca para interface de usuário com alta performance.
-* **TypeScript**: Tipagem estática para um código mais seguro e menos propenso a erros.
-* **Axios**: Cliente HTTP para realizar requisições à API.
-* **CSS3**: Estilização personalizada com foco em UX (User Experience).
+## 🛠️ Tecnologias e Conceitos
 
-## 📋 Funcionalidades
-* **Cadastro de Usuários**: Validação de campos vazios e tratamento de usuários duplicados.
-* **Login**: Verificação de credenciais no banco de dados.
-* **Persistência**: Os dados permanecem salvos no banco SQLite mesmo após reiniciar o servidor.
-* **Design Responsivo**: Tela de login e cadastro centralizada e intuitiva.
+### **Backend (Python + Flask)**
+* **API RESTful**: Uso correto dos verbos HTTP (`GET`, `POST`, `PUT`, `DELETE`).
+* **SQLite**: Banco de dados relacional para persistência de dados.
+* **CORS**: Configuração de segurança para comunicação entre domínios.
 
-## 📁 Estrutura do Projeto
-```plaintext
-login_python/
-├── backend/
-│   ├── app.py          # Servidor Flask e rotas da API
-│   └── database.db     # Arquivo do banco de dados SQLite
-└── frontend/
-    ├── src/
-    │   ├── App.tsx     # Lógica principal e telas (Login/Cadastro)
-    │   └── App.css     # Estilização do sistema
-    └── package.json    # Dependências do React
-```
-## ⚙️ Como rodar o projeto
+### **Frontend (React + TypeScript)**
+* **Hooks**: `useState` para dados, `useEffect` para persistência de sessão.
+* **Interface**: CSS personalizado com **Scrollbars Slim**, **Modais de edição** e layout em **Grid**.
+* **Axios**: Gerenciamento de requisições assíncronas para a API.
 
-### 1. Preparar o Backend
-```bash
-cd backend
-# Criar ambiente virtual (recomendado)
-py -m venv venv
-# Ativar venv (Windows)
-.\venv\Scripts\activate
-# Instalar bibliotecas
-pip install flask flask-cors
-# Rodar o servidor
-py app.py
-```
-### 2. Preparar o Frontend
-```bash
-cd frontend
-# Instalar dependências
-npm install
-# Rodar em modo de desenvolvimento
-npm run dev
-```
-## 🧠 Aprendizados
+## 📁 Como Rodar o Projeto
 
-Este projeto permitiu consolidar conhecimentos fundamentais para a carreira de desenvolvedor:
+1.  **Servidor**:
+    ```bash
+    cd backend
+    py app.py
+    ```
+2.  **Cliente**:
+    ```bash
+    cd frontend
+    npm install
+    npm run dev
+    ```
 
-* **Criação de APIs RESTful** utilizando Python.
-* **Manipulação de banco de dados SQL** (CRUD básico).
-* **Gerenciamento de estados no React** (Hooks como `useState`).
-* **Configuração de ambiente de desenvolvimento** Python no VS Code.
+## 🧠 Aprendizados Relevantes
+Durante o desenvolvimento, foram aplicados conceitos de **análise de sistemas** para garantir a integridade dos dados (validação de campos vazios) e uma experiência de usuário (UX) fluida através de componentes reativos e persistência de estado.
