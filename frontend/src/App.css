@@ -140,3 +140,23 @@ button {
   border-radius: 50%;
   display: inline-block;
 }
+
+/* Alvo específico para a lista de usuários ou container com scroll */
+.user-list-container::-webkit-scrollbar {
+  width: 6px;               /* Deixa a barra bem fininha */
+}
+
+.user-list-container::-webkit-scrollbar-track {
+  background: transparent;  /* Fundo da barra invisível para não poluir */
+}
+
+.user-list-container::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.8); /* Cor cinza bem suave */
+  border-radius: 10px;       /* Deixa as pontas arredondadas */
+  transition: background 0.3s;
+}
+
+/* Quando o usuário passa o mouse, a barra aparece um pouco mais */
+.user-list-container::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.2); 
+}

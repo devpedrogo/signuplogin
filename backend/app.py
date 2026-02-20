@@ -81,6 +81,41 @@ def get_dashboard_info():
         "mensagem": "Dados sincronizados com o banco local."
     }), 200
 
+# Rota para DELETAR um usuário específico
+@app.route('/delete-user/<username>', methods=['DELETE'])
+def delete_user(username):
+    conn = sqlite3.connect('database.db')
+    cursor = conn.cursor()
+    
+    # Executa a remoção
+    cursor.execute('DELETE FROM users WHERE username = ?', (username,))
+    conn.commit()
+    
+    if cursor.rowcount > 0:
+        conn.close()
+        return jsonify({"message": f"Usuário {username} removido!"}), 200
+    else:
+        conn.close()
+        return jsonify({"error": "Usuário não encontrado"}), 404
+
+# Rota para ATUALIZAR a senha de um usuário
+@app.route('/update-password', methods=['PUT'])
+def update_password():
+    data = request.json
+    username = data.get('username')
+    new_password = data.get('new_password')
+
+    if not new_password:
+        return jsonify({"error": "A nova senha não pode ser vazia"}), 400
+
+    conn = sqlite3.connect('database.db')
+    cursor = conn.cursor()
+    cursor.execute('UPDATE users SET password = ? WHERE username = ?', (new_password, username))
+    conn.commit()
+    conn.close()
+
+    return jsonify({"message": "Senha atualizada com sucesso!"}), 200
+
 if __name__ == '__main__':
     init_db()
     app.run(debug=True, port=5000)

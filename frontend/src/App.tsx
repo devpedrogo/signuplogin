@@ -58,6 +58,23 @@ function App() {
     }
   };
 
+  const handleDelete = async (userToDelete: string) => {
+    // Evitar que o usuário logado se delete por acidente (opcional)
+    if (userToDelete === username) {
+      alert("Você não pode deletar a si mesmo enquanto estiver logado!");
+      return;
+    }
+
+    if (window.confirm(`Tem certeza que deseja deletar ${userToDelete}?`)) {
+      try {
+        await axios.delete(`http://127.0.0.1:5000/delete-user/${userToDelete}`);
+        fetchDashboardData(); // Atualiza a lista automaticamente após deletar
+      } catch (error) {
+        alert("Erro ao deletar usuário");
+      }
+    }
+  };
+
   const [dashboardData, setDashboardData] = useState<any>(null);
 
   // Função para buscar dados do BD
@@ -103,7 +120,7 @@ function App() {
 
               <div className='stat-card' style={{ textAlign: 'left', borderLeftColor: '#f30713' }}>
                 <h4 style={{ fontSize: '0.8rem', color: '#666', marginBottom: '10px' }}>USUÁRIOS CADASTRADOS</h4>
-                <ul style={{ 
+                <ul className='user-list-container' style={{ 
                   listStyle: 'none', 
                   padding: 0, 
                   maxHeight: '100px', 
@@ -117,11 +134,28 @@ function App() {
                       borderBottom: index === dashboardData.usuarios.length - 1 ? 'none' : '1px solid #e70606',
                       fontSize: '0.9rem',
                       display: 'flex',
+                      justifyContent: 'space-between',
                       alignItems: 'center',
                       gap: '10px',
                       color: 'black'
                     }}>
-                      👤 {user}
+                      <span>👤 {user}</span>
+                      <button 
+                        onClick={() => handleDelete(user)}
+                        style={{ 
+                          backgroundColor: '#ff4d4d', 
+                          color: 'white', 
+                          border: 'none', 
+                          padding: '5px 12px', 
+                          borderRadius: '4px',
+                          cursor: 'pointer',
+                          fontSize: '0.7rem',
+                          width: '60px',
+                          margin: '0'
+                        }}
+                      >
+                        Excluir
+                      </button>
                     </li>
                   ))}
                 </ul>
@@ -138,7 +172,7 @@ function App() {
           <button 
             className="btn-register" 
             style={{ marginTop: '20px', backgroundColor: '#e74c3c' }} 
-            onClick={() => { localStorage.removeItem('user_session'); setIsLogged(false); setDashboardData(null); cleanInputs(); }}
+            onClick={() => { localStorage.removeItem('user_session');   setIsLogged(false); setDashboardData(null); cleanInputs(); }}
           >
             Encerrar Sessão
           </button>
