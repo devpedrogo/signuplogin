@@ -264,7 +264,7 @@ function App() {
   // 2. RENDERIZAÇÃO CONDICIONAL DE TELAS
   return (
     <div className="container">
-      <div className="card user-list-container">
+      <div className="card">
         {view === 'login' ? (
           <div>
             <h2>🔐 Login</h2>
@@ -284,29 +284,31 @@ function App() {
         ) : (
           <div>
             <h2>📝 Criar Conta</h2>
-            <div className="input-group">
-              <label>Nome Completo</label>
-              <input type="text" value={fullName} onChange={(e) => setFullName(e.target.value)} />
-            </div>
-            <div className="input-group">
-              <label>Nome de Usuário</label>
-              <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
-            </div>
-            <div className="input-group">
-              <label>Telefone</label>
-              <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} />
-            </div>
-            <div className="input-group">
-              <label>Email</label>
-              <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-            </div>
-            <div className="input-group">
-              <label>Senha</label>
-              <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-            </div>
-            <div className="input-group">
-              <label>Confirmar Senha</label>
-              <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
+            <div className='area-inputs user-list-container'>
+              <div className="input-group">
+                <label>Nome Completo</label>
+                <input type="text" value={fullName} onChange={(e) => setFullName(e.target.value)} />
+              </div>
+              <div className="input-group">
+                <label>Nome de Usuário</label>
+                <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
+              </div>
+              <div className="input-group">
+                <label>Telefone</label>
+                <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} />
+              </div>
+              <div className="input-group">
+                <label>Email</label>
+                <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+              </div>
+              <div className="input-group">
+                <label>Senha</label>
+                <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+              </div>
+              <div className="input-group">
+                <label>Confirmar Senha</label>
+                <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
+              </div>
             </div>
             <button className="btn-register" onClick={handleRegister}>Finalizar Cadastro</button>
             <p className="link-text">
