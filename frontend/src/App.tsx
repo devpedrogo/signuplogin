@@ -7,6 +7,13 @@ function App() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
+  // Novos estados para o cadastro
+  const [fullName, setFullName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  // Estado único para o login (pode ser email ou username)
+  const [identifier, setIdentifier] = useState('');
   
   // Estados de controle de navegação
   const [isLogged, setIsLogged] = useState(false);
@@ -27,34 +34,50 @@ function App() {
   }, []);
 
   const handleRegister = async () => {
-    if (username.trim() === '' || password.trim() === '') {
-    setMessage('Por favor, preencha todos os campos antes de enviar.');
-    return; // Para a execução aqui
+    // Validação de confirmação de senha
+    if (password !== confirmPassword) {
+      setMessage("As senhas não conferem!");
+      return;
     }
 
     try {
-      const response = await axios.post('http://127.0.0.1:5000/register', { username, password });
+      const response = await axios.post('http://127.0.0.1:5000/register', {
+        full_name: fullName,
+        email,
+        phone,
+        username,
+        password
+      });
       setMessage(response.data.message);
-      // Opcional: após cadastrar, manda o usuário para a tela de login
-      setTimeout(() => { setView('login'); cleanInputs(); }, 1500);
+      setTimeout(() => setView('login'), 2000);
     } catch (error: any) {
-      setMessage(error.response?.data?.error || 'Erro ao cadastrar');
+      setMessage(error.response?.data?.error);
     }
   };
 
   const handleLogin = async () => {
-    if (username.trim() === '' || password.trim() === '') {
-    setMessage('Por favor, preencha todos os campos antes de enviar.');
-    return; // Para a execução aqui
+    // Validação básica: não deixa enviar vazio
+    if (!identifier.trim() || !password.trim()) {
+      setMessage("Por favor, preencha as credenciais.");
+      return;
     }
-    
+
     try {
-      const response = await axios.post('http://127.0.0.1:5000/login', { username, password });
+      // Enviar 'identifier' no corpo da requisição
+      const response = await axios.post('http://127.0.0.1:5000/login', {
+        identifier: identifier, 
+        password: password
+      });
+
       setMessage(response.data.message);
-      localStorage.setItem('user_session', username);
+      
+      // Armazenar o username que o Python retornou para manter a sessão
+      localStorage.setItem('user_session', response.data.user);
+      setUsername(response.data.user); // Atualiza o estado global com o nome real
       setIsLogged(true);
+      
     } catch (error: any) {
-      setMessage(error.response?.data?.error || 'Usuário ou senha inválidos');
+      setMessage(error.response?.data?.error || "Erro ao realizar login");
     }
   };
 
@@ -241,13 +264,13 @@ function App() {
   // 2. RENDERIZAÇÃO CONDICIONAL DE TELAS
   return (
     <div className="container">
-      <div className="card">
+      <div className="card user-list-container">
         {view === 'login' ? (
           <div>
             <h2>🔐 Login</h2>
             <div className="input-group">
-              <label>Usuário</label>
-              <input  type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
+              <label>Usuário ou Email</label>
+              <input  type="text" value={identifier} onChange={(e) => setIdentifier(e.target.value)} />
             </div>
             <div className="input-group">
               <label>Senha</label>
@@ -262,12 +285,28 @@ function App() {
           <div>
             <h2>📝 Criar Conta</h2>
             <div className="input-group">
-              <label>Usuário</label>
+              <label>Nome Completo</label>
+              <input type="text" value={fullName} onChange={(e) => setFullName(e.target.value)} />
+            </div>
+            <div className="input-group">
+              <label>Nome de Usuário</label>
               <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
+            </div>
+            <div className="input-group">
+              <label>Telefone</label>
+              <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} />
+            </div>
+            <div className="input-group">
+              <label>Email</label>
+              <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
             </div>
             <div className="input-group">
               <label>Senha</label>
               <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+            </div>
+            <div className="input-group">
+              <label>Confirmar Senha</label>
+              <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
             </div>
             <button className="btn-register" onClick={handleRegister}>Finalizar Cadastro</button>
             <p className="link-text">

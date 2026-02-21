@@ -9,9 +9,13 @@ CORS(app) # Isso permite que o React (que estará em outra porta) acesse a API
 def init_db():
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
+    # Adicionando nome, email e telefone
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
+            full_name TEXT NOT NULL,
+            email TEXT UNIQUE NOT NULL,
+            phone TEXT,
             username TEXT UNIQUE NOT NULL,
             password TEXT NOT NULL
         )
@@ -19,45 +23,53 @@ def init_db():
     conn.commit()
     conn.close()
 
+# Rota de Cadastro Atualizada
 @app.route('/register', methods=['POST'])
 def register():
     data = request.json
-    username = data.get('username', '').strip() # .strip() remove espaços vazios
+    full_name = data.get('full_name', '').strip()
+    email = data.get('email', '').strip()
+    phone = data.get('phone', '').strip()
+    username = data.get('username', '').strip()
     password = data.get('password', '').strip()
 
-    # Validação: se algum estiver vazio, retorna erro 400
-    if not username or not password:
-        return jsonify({"error": "Usuário e senha são obrigatórios!"}), 400
+    if not all([full_name, email, username, password]):
+        return jsonify({"error": "Campos obrigatórios faltando!"}), 400
 
     try:
         conn = sqlite3.connect('database.db')
         cursor = conn.cursor()
-        cursor.execute('INSERT INTO users (username, password) VALUES (?, ?)', (username, password))
+        cursor.execute('''
+            INSERT INTO users (full_name, email, phone, username, password) 
+            VALUES (?, ?, ?, ?, ?)
+        ''', (full_name, email, phone, username, password))
         conn.commit()
         conn.close()
         return jsonify({"message": "Usuário criado com sucesso!"}), 201
     except sqlite3.IntegrityError:
-        return jsonify({"error": "Usuário já existe!"}), 400
+        return jsonify({"error": "Username ou Email já cadastrados!"}), 400
 
+# Rota de Login Flexível (Username ou Email)
 @app.route('/login', methods=['POST'])
 def login():
     data = request.json
-    username = data.get('username', '').strip()
+    identifier = data.get('identifier', '').strip() # Pode ser username ou email
     password = data.get('password', '').strip()
-
-    if not username or not password:
-        return jsonify({"error": "Preencha todos os campos!"}), 400
 
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
-    cursor.execute('SELECT * FROM users WHERE username = ? AND password = ?', (username, password))
+    # A mágica do OR: verifica se bate com username OU email
+    cursor.execute('''
+        SELECT username FROM users 
+        WHERE (username = ? OR email = ?) AND password = ?
+    ''', (identifier, identifier, password))
+    
     user = cursor.fetchone()
     conn.close()
 
     if user:
-        return jsonify({"message": "Login realizado com sucesso!", "user": username}), 200
-    else:
-        return jsonify({"error": "Usuário ou senha incorretos!"}), 401
+        return jsonify({"message": "Login realizado!", "user": user[0]}), 200
+    return jsonify({"error": "Credenciais inválidas!"}), 401
 
 @app.route('/dashboard-info', methods=['GET'])
 def get_dashboard_info():
