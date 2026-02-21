@@ -19,7 +19,6 @@
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   width: 350px;
-  max-height: 500px;
 }
 
 .area-inputs{
@@ -98,6 +97,7 @@ button {
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   width: 950px;
+  max-height: 500px;
 }
 
 /* Layout do Dashboard */
@@ -114,6 +114,7 @@ button {
   border-radius: 8px;
   border-left: 4px solid #2196F3;
   text-align: left;
+  max-height: 300px;
 }
 
 .stat-card h4 {
@@ -176,6 +177,39 @@ button {
   display: flex;
   gap: 10px;
   margin-top: 20px;
+}
+
+button.edit-btn{
+  width: '60px';
+  margin: '0'; 
+  font-size: '0.7rem';
+  background-color: '#23aeb3'; 
+  color: 'white';
+  border: 'none';
+  padding: '5px 12px';
+  border-radius: '4px';
+  cursor: 'pointer'
+}
+.del-btn{
+  width: '60px';
+  margin: '0'; 
+  font-size: '0.7rem';
+  background-color: 'red'; 
+  color: 'white';
+  border: 'none';
+  padding: '5px 12px';
+  border-radius: '4px';
+  cursor: 'pointer'
+}
+
+.user-item-list{
+  padding: '8px 12px';
+  font-size: '0.9rem';
+  display: 'flex';
+  justify-content: 'space-between';
+  align-items: 'center';
+  gap: '10px';
+  color: 'black'
 }
 
 /* Alvo específico para a lista de usuários ou container com scroll */
