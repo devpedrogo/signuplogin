@@ -54,6 +54,13 @@ function App() {
 
   const handleRegister = async () => {
     if (password !== confirmPassword) return setMessage("Senhas não conferem");
+      const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    
+    if (!passwordRegex.test(password)) {
+      setMessage("A senha não atende aos requisitos mínimos de segurança.");
+      return;
+    }
+    
     try {
       await api.post('/register', { full_name: fullName, email, phone, username, password });
       setView('login'); cleanInputs();
