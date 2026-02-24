@@ -8,17 +8,17 @@ interface DashboardProps {
   handleLogout: () => void;
   showModal: boolean;
   setShowModal: (b: boolean) => void;
-  selectedUser: string;
-  setSelectedUser: (u: string) => void;
-  newPassword: string;
-  setNewPassword: (s: string) => void;
-  confirmUpdate: () => void;
+  // Mudamos aqui para suportar o objeto de edição completo
+  editData: any;
+  setEditData: (data: any) => void;
+  openEditModal: (user: any) => void; 
+  handleSaveEdit: () => void;
 }
 
 export const Dashboard = ({ 
   username, dashboardData, handleDelete, handleLogout, 
-  showModal, setShowModal, selectedUser, setSelectedUser, 
-  newPassword, setNewPassword, confirmUpdate 
+  showModal, setShowModal, editData, setEditData, 
+  openEditModal, handleSaveEdit
 }: DashboardProps) => (
   <div className="dash-card" style={{ maxWidth: '1200px' }}>
     <div style={{ display: 'flex', alignItems: 'center', gap: '10px', justifyContent: 'center' }}>
@@ -37,22 +37,34 @@ export const Dashboard = ({
         </div>
         <div className='stat-card' style={{ textAlign: 'left', borderLeftColor: '#f30713' }}>
           <h4>CADASTRADOS</h4>
-          <ul className='user-list-container' style={{maxHeight: '200px', overflow: 'scroll'}}>
-            {dashboardData.usuarios.map((user: string, index: number) => (
+          <ul className='user-list-container' style={{maxHeight: '200px', overflowY: 'auto'}}>
+            {dashboardData.usuarios.map((user: any, index: number) => (
               <li key={index} className="user-item-list" style={{
                 padding: '8px 12px',
-                border: '1px solid #978a8a',
+                borderBottom: '1px solid #eee',
                 fontSize: '0.9rem',
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                gap: '10px',
                 color: 'black'
               }}>
-                <span>👤 {user}</span>
+                {/* Agora usamos user.username pois 'user' é um objeto */}
+                <span>👤 {user.username}</span>
                 <div style={{ display: 'flex', gap: '5px' }}>
-                  <button className="edit-btn" onClick={() => { setSelectedUser(user); setShowModal(true); }} style={{ width: '60px', margin: '0', fontSize: '0.7rem', backgroundColor: '#23aeb3', color: 'white', border: 'none', padding: '5px 12px', borderRadius: '4px', cursor: 'pointer' }}>Editar</button>
-                  <button onClick={() => handleDelete(user)} className="del-btn" style={{ width: '60px', margin: '0', fontSize: '0.7rem', backgroundColor: '#f80202', color: 'white', border: 'none', padding: '5px 12px', borderRadius: '4px', cursor: 'pointer' }}>Excluir</button>
+                  <button 
+                    className="edit-btn" 
+                    onClick={() => openEditModal(user)} 
+                    style={{ width: '60px', fontSize: '0.7rem', backgroundColor: '#23aeb3', color: 'white', border: 'none', padding: '5px 12px', borderRadius: '4px', cursor: 'pointer' }}
+                  >
+                    Editar
+                  </button>
+                  <button 
+                    onClick={() => handleDelete(user.username)} 
+                    className="del-btn" 
+                    style={{ width: '60px', fontSize: '0.7rem', backgroundColor: '#f80202', color: 'white', border: 'none', padding: '5px 12px', borderRadius: '4px', cursor: 'pointer' }}
+                  >
+                    Excluir
+                  </button>
                 </div>
               </li>
             ))}
@@ -65,10 +77,11 @@ export const Dashboard = ({
       Encerrar Sessão
     </button>
 
-    {showModal && (
+    {showModal && editData && (
       <Modal 
-        selectedUser={selectedUser} newPassword={newPassword} 
-        setNewPassword={setNewPassword} confirmUpdate={confirmUpdate} 
+        editData={editData} 
+        setEditData={setEditData} 
+        onSave={handleSaveEdit} 
         onClose={() => setShowModal(false)} 
       />
     )}

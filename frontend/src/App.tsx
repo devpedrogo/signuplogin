@@ -20,6 +20,7 @@ function App() {
   const [showModal, setShowModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState('');
   const [newPassword, setNewPassword] = useState('');
+  const [editData, setEditData] = useState<any>(null);
 
   const cleanInputs = () => {
     setIdentifier(''); setUsername(''); setPassword(''); setConfirmPassword('');
@@ -75,9 +76,20 @@ function App() {
     }
   };
 
-  const confirmUpdate = async () => {
-    await api.put('/update-user', { username: selectedUser, new_password: newPassword });
-    setShowModal(false); setNewPassword(''); fetchDashboardData();
+  const openEditModal = (userObj: any) => {
+    setEditData({ ...userObj, old_username: userObj.username });
+    setShowModal(true);
+  };
+
+  const handleSaveEdit = async () => {
+    try {
+      const response = await api.put('/update-user-complete', editData);
+      alert(response.data.message);
+      setShowModal(false);
+      fetchDashboardData(); // Atualiza a lista com os novos dados
+    } catch (error: any) {
+      alert(error.response?.data?.error || "Erro ao atualizar perfil");
+    }
   };
 
   return (
@@ -85,12 +97,21 @@ function App() {
       <div className={isLogged ? "" : "card"}>
         {isLogged ? (
           <Dashboard 
-            username={username} dashboardData={dashboardData} 
-            handleDelete={handleDelete} handleLogout={() => { localStorage.removeItem('user_session'); setIsLogged(false); }}
-            showModal={showModal} setShowModal={setShowModal}
-            selectedUser={selectedUser} setSelectedUser={setSelectedUser}
-            newPassword={newPassword} setNewPassword={setNewPassword}
-            confirmUpdate={confirmUpdate}
+            username={username} 
+            dashboardData={dashboardData} 
+            handleDelete={handleDelete} 
+            handleLogout={() => { 
+              localStorage.removeItem('user_session'); 
+              setIsLogged(false); 
+              setDashboardData(null); // Limpa os dados ao sair
+            }}
+            showModal={showModal} 
+            setShowModal={setShowModal}
+            // --- ADICIONE ESTAS LINHAS ABAIXO ---
+            editData={editData} 
+            setEditData={setEditData}
+            openEditModal={openEditModal}
+            handleSaveEdit={handleSaveEdit}
           />
         ) : view === 'login' ? (
           <Login 
