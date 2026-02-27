@@ -4,6 +4,7 @@ import './App.css';
 import { Login } from './pages/Login';
 import { Register } from './pages/Register';
 import { Dashboard } from './pages/Dashboard';
+import { UserList } from './pages/UserList';
 
 function App() {
   const [username, setUsername] = useState('');
@@ -15,11 +16,11 @@ function App() {
   const [identifier, setIdentifier] = useState('');
   const [message, setMessage] = useState('');
   const [isLogged, setIsLogged] = useState(false);
-  const [view, setView] = useState<'login' | 'register'>('login');
+  const [view, setView] = useState<'login' | 'register' |'dashboard' | 'report'>('login');
   const [dashboardData, setDashboardData] = useState<any>(null);
   const [showModal, setShowModal] = useState(false);
-  const [selectedUser, setSelectedUser] = useState('');
-  const [newPassword, setNewPassword] = useState('');
+  // const [selectedUser, setSelectedUser] = useState('');
+  // const [newPassword, setNewPassword] = useState('');
   const [editData, setEditData] = useState<any>(null);
 
   const cleanInputs = () => {
@@ -96,6 +97,9 @@ function App() {
     <div className="container">
       <div className={isLogged ? "" : "card"}>
         {isLogged ? (
+          view === 'report' ? (
+          <UserList onBack={() => setView('dashboard')} />
+        ) : 
           <Dashboard 
             username={username} 
             dashboardData={dashboardData} 
@@ -112,6 +116,7 @@ function App() {
             setEditData={setEditData}
             openEditModal={openEditModal}
             handleSaveEdit={handleSaveEdit}
+            openReport={() => setView('report')}
           />
         ) : view === 'login' ? (
           <Login 

@@ -13,14 +13,15 @@ interface DashboardProps {
   setEditData: (data: any) => void;
   openEditModal: (user: any) => void; 
   handleSaveEdit: () => void;
+  openReport: () => void;
 }
 
 export const Dashboard = ({ 
   username, dashboardData, handleDelete, handleLogout, 
   showModal, setShowModal, editData, setEditData, 
-  openEditModal, handleSaveEdit
+  openEditModal, handleSaveEdit, openReport
 }: DashboardProps) => (
-  <div className="dash-card" style={{ maxWidth: '1200px' }}>
+  <div className="dash-card" style={{ maxWidth: '100%' }}>
     <div style={{ display: 'flex', alignItems: 'center', gap: '10px', justifyContent: 'center' }}>
       <span style={{ fontSize: '2rem' }}>📊</span>
       <h2 style={{ margin: 0 }}>Painel de Controle</h2>
@@ -72,6 +73,21 @@ export const Dashboard = ({
         </div>
       </div>
     ) : <p>Carregando...</p>}
+
+    <button 
+      onClick={openReport}
+      style={{ 
+        backgroundColor: '#34495e', 
+        marginTop: '10px', 
+        display: 'flex', 
+        alignItems: 'center', 
+        justifyContent: 'center', 
+        gap: '10px',
+        cursor: 'pointer'
+      }}
+    >
+      <span>📄</span> Gerar Relatório Completo
+    </button>
 
     <button className="btn-register" style={{ marginTop: '20px', backgroundColor: '#e74c3c' }} onClick={handleLogout}>
       Encerrar Sessão
