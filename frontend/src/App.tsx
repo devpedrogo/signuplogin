@@ -51,7 +51,14 @@ function App() {
       const res = await api.post('/login', { identifier, password });
       localStorage.setItem('user_session', res.data.user);
       setUsername(res.data.user); setIsLogged(true);
-    } catch (err: any) { setMessage(err.response?.data?.error || "Erro"); }
+    } catch (err: any) { 
+      setMessage(err.response?.data?.error || "Erro"); 
+      
+      // Timeout para a mensagem de erro sumir após 1 segundo.
+      setTimeout(() => {
+        setMessage('');
+      }, 1000)
+    }
   };
 
   const handleRegister = async () => {
@@ -66,7 +73,14 @@ function App() {
     try {
       await api.post('/register', { full_name: fullName, email, phone, username, password });
       setView('login'); cleanInputs();
-    } catch (err: any) { setMessage(err.response?.data?.error); }
+    } catch (err: any) { 
+      setMessage(err.response?.data?.error); 
+    
+      // Timeout para a mensagem de erro sumir após 1 segundo.
+      setTimeout(() => {
+        setMessage('');
+      }, 1000)
+    }
   };
 
   const handleDelete = async (u: string) => {

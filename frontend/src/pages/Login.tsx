@@ -9,7 +9,7 @@ interface LoginProps {
 }
 
 export const Login = ({ identifier, setIdentifier, password, setPassword, handleLogin, setView, cleanInputs }: LoginProps) => (
-  <div style={{width: '400px'}}>
+  <div style={{width: '350px'}}>
     <h2>🔐 Login</h2>
     <div className="input-group">
       <label>Usuário ou Email</label>

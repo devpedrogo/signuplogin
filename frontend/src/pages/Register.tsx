@@ -8,15 +8,11 @@ interface RegisterProps {
 
 
 export const Register = ({ data, setData, handleRegister, setView, cleanInputs }: RegisterProps) => {
-  const validatePassword = (pw: string) => {
-    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-    return regex.test(pw);
-  };
 
   const { password } = data;
 
   return( 
-    <div>
+    <div style={{width: '350px'}}>
       <h2>📝 Criar Conta</h2>
       <div className='area-inputs user-list-container'>
         <div className="input-group"><label>Nome Completo</label>
