@@ -50,7 +50,8 @@ export const Dashboard = ({
                 gap: '0px',
                 cursor: 'pointer',
                 width: '120px',
-                fontSize:'10px'
+                fontSize:'10px',
+                padding: '8px 10px'
               }}
             >
               <span>📄</span> Listar Usuários
