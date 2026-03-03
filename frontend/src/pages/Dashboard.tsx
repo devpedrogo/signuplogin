@@ -37,7 +37,25 @@ export const Dashboard = ({
           <div className="status-online"><span className="status-dot"></span>{dashboardData.status_sistema}</div>
         </div>
         <div className='stat-card' style={{ textAlign: 'left', borderLeftColor: '#f30713' }}>
-          <h4>CADASTRADOS</h4>
+          <div style={{display: 'flex', alignItems: 'start', justifyContent: 'space-between', gap: '15px'}}>
+            <h4>CADASTRADOS</h4>
+            <button 
+              onClick={openReport}
+              style={{ 
+                backgroundColor: '#34495e', 
+                marginTop: '0px', 
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent: 'center', 
+                gap: '0px',
+                cursor: 'pointer',
+                width: '120px',
+                fontSize:'10px'
+              }}
+            >
+              <span>📄</span> Listar Usuários
+            </button>
+          </div>
           <ul className='user-list-container' style={{maxHeight: '200px', overflowY: 'auto'}}>
             {dashboardData.usuarios.map((user: any, index: number) => (
               <li key={index} className="user-item-list" style={{
@@ -73,21 +91,6 @@ export const Dashboard = ({
         </div>
       </div>
     ) : <p>Carregando...</p>}
-
-    <button 
-      onClick={openReport}
-      style={{ 
-        backgroundColor: '#34495e', 
-        marginTop: '10px', 
-        display: 'flex', 
-        alignItems: 'center', 
-        justifyContent: 'center', 
-        gap: '10px',
-        cursor: 'pointer'
-      }}
-    >
-      <span>📄</span> Gerar Relatório Completo
-    </button>
 
     <button className="btn-register" style={{ marginTop: '20px', backgroundColor: '#e74c3c' }} onClick={handleLogout}>
       Encerrar Sessão

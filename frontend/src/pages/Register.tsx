@@ -16,13 +16,13 @@ export const Register = ({ data, setData, handleRegister, setView, cleanInputs }
       <h2>📝 Criar Conta</h2>
       <div className='area-inputs user-list-container'>
         <div className="input-group"><label>Nome Completo</label>
-          <input type="text" value={data.fullName} onChange={(e) => setData('fullName', e.target.value)} />
+          <input size={30} type="text" value={data.fullName} onChange={(e) => setData('fullName', e.target.value)} />
         </div>
         <div className="input-group"><label>Nome de Usuário</label>
           <input type="text" value={data.username} onChange={(e) => setData('username', e.target.value)} />
         </div>
         <div className="input-group"><label>Telefone</label>
-          <input type="tel" value={data.phone} onChange={(e) => setData('phone', e.target.value)} />
+          <input required size={15} type="tel" value={data.phone} onChange={(e) => setData('phone', e.target.value)} />
         </div>
         <div className="input-group"><label>Email</label>
           <input type="email" value={data.email} onChange={(e) => setData('email', e.target.value)} />
