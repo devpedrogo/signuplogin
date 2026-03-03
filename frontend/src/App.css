@@ -12,7 +12,7 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: #1d355a;
+  background-color: #fcfdfd;
   width: 100%;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
@@ -96,7 +96,7 @@ button {
 }
 
 .dash-card{
-  background: rgb(206, 206, 206);
+  background: rgb(58, 131, 109);
   padding: 2rem;
   border-radius: 3px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
